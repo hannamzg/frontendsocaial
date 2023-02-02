@@ -6,14 +6,41 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import moment from "moment"
+import {useQuery,useQueryClient,useMutation} from '@tanstack/react-query'
+import {makeRequests} from "../../axios";
+import { AuthContext } from "../../context/authContext";
 
 const Post = ({ post }) => {
   const [commentOpen, setCommentOpen] = useState(false);
 
-  //TEMPORARY
-  const liked = false;
+  const {currentUser} = useContext(AuthContext)
+
+  const { isLoading, error, data } = useQuery(['likes',post.id], ()=>
+
+  makeRequests.get("/likes?postId="+post.id).then((res)=>{
+    return res.data
+  })
+)
+
+  const queryClient = useQueryClient()
+
+
+  const mutation = useMutation((liked)=>{
+    if(liked) return makeRequests.delete("/likes?postId="+post.id)
+    makeRequests.post("/likes",{postId: post.id})
+  },
+  {
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries(["likes"])
+    },
+  })
+
+  function handleLike(){
+    mutation.mutate(data.includes(currentUser.id))
+  }
 
   return (
     <div className="post">
@@ -39,9 +66,12 @@ const Post = ({ post }) => {
         </div>
         <div className="info">
           <div className="item">
-            {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-            12 Likes
-          </div>
+                 {isLoading? "loading": data.includes(currentUser.id) ? (
+               <FavoriteOutlinedIcon style={{color:"red"}} onClick={handleLike} />
+                ):( <FavoriteBorderOutlinedIcon onClick={handleLike}/>
+              )}  
+              {typeof data =="object" && data.length} Likes  
+         </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
             12 Comments
@@ -51,7 +81,7 @@ const Post = ({ post }) => {
             Share
           </div>
         </div>
-        {commentOpen && <Comments />}
+        {commentOpen && <Comments postId={post.id} />}
       </div>
     </div>
   );
