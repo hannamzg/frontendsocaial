@@ -12,5 +12,9 @@
     @include tablet{
       padding: 20px;
     }
+    .mid{
+      max-width: 1000px;
+      margin: 0 auto;
+    }
   }
  }

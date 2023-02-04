@@ -13,6 +13,7 @@ import {makeRequests} from "../../axios";
 import { AuthContext } from "../../context/authContext";
 
 const Post = ({ post }) => {
+  
   const [commentOpen, setCommentOpen] = useState(false);
 
   const {currentUser} = useContext(AuthContext)
