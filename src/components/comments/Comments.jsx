@@ -49,13 +49,13 @@ const Comments = ({postId}) => {
         <button onClick={handleClick}>Send</button>
       </div>
       {isLoading? "loading" : data.map((comment) => (
-        <div className="comment">
-          <img src={comment.profilePicture} alt="" />
+        <div className="comment" key={comment.id}>
+          <img src={"/upload/"+comment.profilePic}  alt="" />
           <div className="info">
             <span>{comment.name}</span>
             <p>{comment.desc}</p>
           </div>
-          <span className="date">{moment(comment.createdAt).fromNow()}</span>
+          <span className="date">{ moment(comment.createAt).fromNow()}</span>
         </div>
       ))}
     </div>

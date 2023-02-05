@@ -69,7 +69,6 @@ const Upadate =({setOpenUpdate,user})=>{
     return(
         <div className="update">
           <div className="fromm">
-            Update
               <form>
                   <input type="file" onChange={e=>setCover(e.target.files[0])}/>
                   <input type="file" onChange={e=>setProfile(e.target.files[0])}/>

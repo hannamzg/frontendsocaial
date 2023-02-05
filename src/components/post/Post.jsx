@@ -6,33 +6,49 @@ import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { Link } from "react-router-dom";
 import Comments from "../comments/Comments";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import moment from "moment"
 import {useQuery,useQueryClient,useMutation} from '@tanstack/react-query'
 import {makeRequests} from "../../axios";
 import { AuthContext } from "../../context/authContext";
 
 const Post = ({ post }) => {
-  
+  const [commentData,setCommentData] =useState()
+
   const [commentOpen, setCommentOpen] = useState(false);
+
 
   const {currentUser} = useContext(AuthContext)
 
   const { isLoading, error, data } = useQuery(['likes',post.id], ()=>
-
-  makeRequests.get("/likes?postId="+post.id).then((res)=>{
-    return res.data
-  })
+    makeRequests.get("/likes?postId="+post.id).then((res)=>{
+      return res.data
+    })
 )
 
-  const queryClient = useQueryClient()
 
+
+ useEffect(()=>{
+  
+   makeRequests.get("/comments?postId="+post.id).then((res)=>{
+    setCommentData(res.data)
+   }).catch((err)=>{
+    return err
+   })
+
+   {console.log("soso")}
+},[])
+  
+
+   
+
+
+  const queryClient = useQueryClient()
 
   const mutation = useMutation((liked)=>{
     if(liked) return makeRequests.delete("/likes?postId="+post.id)
     makeRequests.post("/likes",{postId: post.id})
-  },
-  {
+  },{
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries(["likes"])
@@ -42,7 +58,6 @@ const Post = ({ post }) => {
   function handleLike(){
     mutation.mutate(data.includes(currentUser.id))
   }
-
   return (  
     <div className="post">
       <div className="container">
@@ -78,7 +93,7 @@ const Post = ({ post }) => {
               setCommentOpen(!commentOpen)
             }}>
             <TextsmsOutlinedIcon />
-             Comments
+            {commentData && typeof data =="object" && commentData.length} Likes
           </div>
           <div className="item">
             <ShareOutlinedIcon />
