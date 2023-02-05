@@ -43,12 +43,12 @@ const Post = ({ post }) => {
     mutation.mutate(data.includes(currentUser.id))
   }
 
-  return (
+  return (  
     <div className="post">
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={post.profilePic} alt="" />
+            <img src={"/upload/"+post.profilePic} alt="" />
             <div className="details">
               <Link
                 to={`/profile/${post.userId}`}
@@ -73,16 +73,19 @@ const Post = ({ post }) => {
               )}  
               {typeof data =="object" && data.length} Likes  
          </div>
-          <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
+          <div className="item" onClick={() => 
+            {
+              setCommentOpen(!commentOpen)
+            }}>
             <TextsmsOutlinedIcon />
-            12 Comments
+             Comments
           </div>
           <div className="item">
             <ShareOutlinedIcon />
             Share
           </div>
         </div>
-        {commentOpen && <Comments postId={post.id} />}
+        {commentOpen && <Comments postId={post.id}   />}
       </div>
     </div>
   );

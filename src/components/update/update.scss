@@ -11,3 +11,39 @@
     padding: 50px;
     z-index: 999;
 }
+
+
+.fromm{
+    display: flex;
+    flex-direction: column;
+}
+
+.upd{
+    display: block;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    cursor: pointer;
+
+}
+
+.inp{
+    width: 80%;
+    height: 30px;
+    border-radius: 7px;
+    margin: 10px;
+
+}
+
+.close{
+    position: absolute;
+    top: 0;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    
+}

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import "./comments.scss";
 import { AuthContext} from "../../context/authContext";
 import {useQuery ,useMutation,useQueryClient} from '@tanstack/react-query'
@@ -38,15 +38,13 @@ const Comments = ({postId}) => {
       mutation.mutate({desc,postId:postId})
       setDesc("")
     }
-  
-  
-  console.log(data);
   //Temporary
+  
   
   return (
     <div className="comments">
       <div className="write">
-        <img src={currentUser.profilePic} alt="" />
+        <img src={"/upload/"+currentUser.profilePic} alt="" />
         <input type="text" placeholder="write a comment" value={desc} onChange={e=> setDesc(e.target.value)} />
         <button onClick={handleClick}>Send</button>
       </div>

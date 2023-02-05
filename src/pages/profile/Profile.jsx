@@ -19,8 +19,7 @@ import Upadate from "../../components/update/Update.jsx";
 const Profile = () => {
 
   const [openUpdate,setOpenUpdate] =useState(false)
-
-
+ 
   const {currentUser} = useContext(AuthContext)
 
   const userId = parseInt(useLocation().pathname.split("/")[2])
@@ -54,21 +53,14 @@ const Profile = () => {
   function handleFollow(){
     mutation.mutate(relationshipData.includes(currentUser.id))
   }
+  {console.log(data)}
 
   return (
     <div className="profile">
       <div className="mid">
       <div className="images">
-        <img
-          src={data&& data.coverPic}
-          alt=""
-          className="cover"
-        />
-        <img
-          src={data&& data.profilePic}
-          alt=""
-          className="profilePic"
-        />
+      <img src={data&&"/upload/"+data.coverPic} alt="" className="cover" />
+      <img src={data&&"/upload/"+data.profilePic} alt="" className="profilePic" />  
       </div>
       <div className="profileContainer">
         <div className="uInfo">
@@ -110,7 +102,7 @@ const Profile = () => {
         </div>
       <Posts userId={userId}/>
       </div>
-    {openUpdate&& <Upadate setOpenUpdate={setOpenUpdate}/>}
+    {openUpdate&& <Upadate setOpenUpdate={setOpenUpdate} user={data}/>}
       </div>
    
     </div>
